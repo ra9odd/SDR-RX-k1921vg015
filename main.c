@@ -69,15 +69,6 @@ static const int16_t sin_lut[256] =
     -12539, -11793, -11039, -10278, -9512, -8739, -7962, -7179, -6393, -5602, -4808, -4011, -3212, -2410, -1608, -804
 };
 
-
-
-// Таблица синусов и косинусов для гетеродина (Look-up Table)
-// Размер равен FULL_BUF_SIZE * 2 для удобства непрерывного циклического чтения без ветвлений
-//#define LUT_SIZE 512
-
-//float sin_lut_f[256];
-
-
 // Глобальная переменная шага фазы, которую читает смеситель
 volatile uint32_t nco_phase_inc = 0; // Значение по умолчанию (8 кГц)
 volatile uint32_t g_target_freq_hz = 8000;
@@ -155,7 +146,7 @@ volatile uint32_t adc_irq_count = 0;
 
 void ADCSD_IRQHandler();
 void PLIC_Handler_ADC();
-void TMR32_IRQHandler();
+void TMR32_IRQHandler();//убрать
 
 void ADCSD_init()
 {
@@ -307,7 +298,7 @@ void PWM_init(uint16_t period)
   TMR1->CAPCOM[3].CTRL_bit.CAP = 0; 
   TMR1->CAPCOM[3].CTRL_bit.OUTMODE = 3; 
 
-  // Убираем делитель частоты! 
+  // Убираем делитель частоты
   // Значение 0 означает Div1 (нет предделителя, таймер тактируется на полных 50 МГц)
   TMR1->CTRL_bit.DIV = 0; 
 
@@ -445,7 +436,7 @@ void PLIC_Handler_ADC(void)
 }
 
 
-void SDR_Set_Carrier_Freq(int32_t target_freq_hz)
+void SDR_Set_Carrier_Freq(int32_t target_freq_hz) // пока не задействанана
 {
     if (target_freq_hz > 25000)  target_freq_hz = 25000;
     if (target_freq_hz < -25000) target_freq_hz = -25000;
